@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chatbot</title>
+	<style>
+		body { font-family: Arial; }
+		#Chatbot {
+			width: 300px;
+			height: 300px;
+			border: 1px solid #ccc;
+			padding: 10px;
+			overflow-y: scroll;
+		}
+		#userInput { width: 200px; }
+	</style>
+</head>
+<body>
+	
+	<h2>Chat with Me!</h2>
+	<div id="Chatbot"></div>
+	<br>
+	<input type="text" id="userInput" placeholder="Type your question..." />
+	<button onclick="sendMessage()">Send</button>
+
+	<script>
+		function sendMessage() {
+			const input = document.getElementById("userInput");
+			const chatbox = document.getElementById("Chatbot");
+			const userText = input.value.trim();
+
+			if (userText === "") return;
+
+			chatbox.innerHTML += "<p><strong>You:</strong> " + userText + "</p><br>";
+
+			let response = getBotResponse(userText);
+			chatbox.innerHTML += "<p><strong>Bot:</strong> " + response + "</p><br>";
+
+			input.value = "";
+			chatbox.scrollTop = chatbox.scrollHeight;
+		}
+
+		function getBotResponse(input) {
+			// Normalize: lowercase and strip accents
+			input = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+			// DRY: Reusable Google Maps link
+			const mapLink = '<a href="https://maps.app.goo.gl/7Wt6qsEbvQfLXuo46" target="_blank">Google Maps</a>';
+
+			if (input.includes("hello") || input.includes("hi") || input.includes("hola")) {
+				return "Hi there / ¡Hola!";
+			} else if (input.includes("how are you") || input.includes("como estas")) {
+				return "I'm good! What can I do for you? / ¡Estoy bien! ¿En qué puedo ayudarte?";
+			} else if (
+				input.includes("are you open") || 
+				input.includes("what are your hours") ||
+				input.includes("estan abiertos") ||
+				input.includes("cuales son sus horarios") ||
+				input.includes("horario")
+			) {
+				return "Our hours are Wednesday - Sunday: 10:00 AM - 5:00 PM / Nuestro horario es de miércoles a domingo de 10:00 AM a 5:00 PM";
+			} else if (
+				input.includes("what size plants do you have") ||
+				input.includes("what size plants") ||
+				input.includes("que taman") ||
+				input.includes("tamanos de plantas")
+			) {
+				return "We have mostly 3 Gallon plants, along with 7 gallon plants and a few 15 gallon plants / Tenemos principalmente plantas de 3 galones, junto con plantas de 7 galones y algunas de 15 galones.";
+			} else if (
+				input.includes("how much are your plants") || 
+				input.includes("cuanto cuestan tus plantas")
+			) {
+				return "Prices vary depending on the size and type of plant – typically the prices vary between $35 - $55 / Los precios varían según el tamaño y tipo de planta — normalmente están entre $35 y $55.";
+			} else if (
+				input.includes("what size plants do you have and how much are they") ||
+				input.includes("que tamano de plantas y cuanto cuestan")
+			) {
+				return "Tenemos principalmente plantas de 3 galones, junto con plantas de 7 galones y algunas de 15 galones. Los precios varían según el tamaño y tipo de planta — normalmente están entre $35 y $55.";
+			} else if (input.includes("what type of plants")) {
+				return "We have a large variety – please feel free to come visit for further details.";
+			} else if (
+				input.includes("where are you located") ||
+				input.includes("donde estas")
+			) {
+				return `You can find us here: ${mapLink} / Puedes encontrarnos aquí: ${mapLink}`;
+			} else {
+				return `Sorry, I do not understand that at this time. Please feel free to come visit for further details: ${mapLink}. / Lo siento, no entiendo eso por ahora. Por favor siéntete libre de visitarnos para más detalles: ${mapLink}.`;
+			}
+		}
+	</script>
+</body>
+</html>
